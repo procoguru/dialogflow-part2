@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import UserDao from '@daos/User/UserDao.mock';
 const btoa = require('btoa')
 const request = require('request-promise-native');
 const { WebhookClient } = require('dialogflow-fulfillment');
@@ -6,7 +7,7 @@ const { Card, Suggestion } = require('dialogflow-fulfillment');
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 class DialogFlowBot {
-
+    userDao = new UserDao();
     intentMap = new Map();
     agent: any;
     router: any;
@@ -26,6 +27,8 @@ class DialogFlowBot {
             this.startPayment.bind(this));
         this.intentMap.set('Blogs intent',
             this.searchBlogs.bind(this));
+        this.intentMap.set('userDetails',
+            this.searchUserByUserDetails.bind(this));
 
         this.agent.handleRequest(this.intentMap);
         console.log('initialized agent')
@@ -33,22 +36,26 @@ class DialogFlowBot {
     }
 
     createPayloadForDialogFlow(msg: any) {
-        return btoa(JSON.stringify(msg));
+        return (JSON.stringify(msg));
     }
     public mountAgent() {
 
         this.router.all('*', (req: any, res: any) => {
-            //console.log(this.agent, req.body)
-            if (!this.agent) {
-                this.agent = new WebhookClient({
-                    request: req,
-                    response: res
-                })
+            console.log('Is agent available ?', this.agent ? true : false)
 
-                this.init()
-            }
+            this.agent = new WebhookClient({
+                request: req,
+                response: res
+            })
+
+            this.init()
+
         });
     }
+
+
+
+
     private welcomeHandler(agent: any) {
 
         const welcomeMsg = {
@@ -63,6 +70,72 @@ class DialogFlowBot {
         agent.add(this.createPayloadForDialogFlow(welcomeMsg))
     }
 
+    private searchUserByUserDetails(agent: any) {
+        console.log(agent.parameters)
+        return this.userDao.getOne(agent.parameters.email.toLowerCase()).then(x => {
+            console.log('USer info from Dao is', x)
+            if (x) {
+
+                const knownUserMessage = {
+                    text: `Hello ${x.name}, We are glag to see you again ! How can I help you today ?`,
+                    chips: [
+                        {
+                            text: 'I have a query today',
+                            input: 'I have a query to ask'
+                        },
+                        {
+                            text: 'Show my subscribed courses',
+                            input: 'Show my subscribed courses'
+                        },
+                        {
+                            text: 'New courses',
+                            input: 'Show new courses'
+                        },
+
+                        {
+                            text: 'Search blogs',
+                            input: 'search'
+                        }
+
+                    ]
+                }
+
+
+
+                agent.add(this.createPayloadForDialogFlow(knownUserMessage))
+            } else {
+
+                const unknownUserMessage = {
+                    text: `Hello ${agent.parameters['given-name']}, Welcome to Proco Guru ! How can I help you today ?`,
+                    chips: [
+                        {
+                            text: 'Create new account',
+                            input: 'Create my account'
+                        }, {
+                            text: 'Show any offers',
+                            input: 'Show offers'
+                        },
+                        {
+                            text: 'Show my subscribed courses',
+                            input: 'Show my subscribed courses'
+                        },
+                        {
+                            text: 'New courses',
+                            input: 'Show new courses'
+                        },
+
+                        {
+                            text: 'Search blogs',
+                            input: 'search'
+                        }
+
+                    ]
+                }
+                agent.add(this.createPayloadForDialogFlow(unknownUserMessage))
+            }
+            return Promise.resolve();
+        })
+    }
 
     private offersHandler(agent: any) {
 
@@ -124,20 +197,35 @@ class DialogFlowBot {
                 } catch (error) {
 
                 }
-                const searchResults = {
-                    text: 'Please find the blogs you may be interested in',
-                    chips: body.map((x: any) => {
-                        return {
-                            text: x.title,
-                            type: 'webURL',
-                            webURL: `https://proco.guru${x.routerLink}`
+                let searchResults: any = {
+                    imageUrl: 'https://www.lbttravel.com/images/404.gif',
+                    text: 'We cannot find anything for your query, Please try something else...',
+                    chips: [
+                        {
+                            text: 'Tell more about the blog I need',
+                            input: 'write blog on'
                         }
-                    })
+
+                    ]
+                }
+                if (body && body.length) {
+
+
+                    searchResults = {
+                        text: 'Please find the blogs you may be interested in',
+                        chips: body.map((x: any) => {
+                            return {
+                                text: x.title,
+                                type: 'webURL',
+                                webURL: `https://proco.guru${x.routerLink}`
+                            }
+                        })
+                    }
                 }
 
                 console.log(searchResults)
                 agent.add(this.createPayloadForDialogFlow(searchResults));
-                return Promise.resolve(agent);
+                return Promise.resolve();
             })
     }
 

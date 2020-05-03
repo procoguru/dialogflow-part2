@@ -48,6 +48,11 @@ export class ChatService {
       let replyFromBot: Message | RichMessage = null;
       try {
         msg = atob(msg)
+      } catch (error) {
+
+      }
+      try {
+
         msg = msg.replace(/\(/g, '{').replace(/\)/g, '}')
         msg = JSON.parse(`${msg}`)
         msg.sentBy = 'bot';
