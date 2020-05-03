@@ -15,7 +15,7 @@ export class ChatService {
 
   private conversationSubject = new Subject<Message[] | RichMessage[]>();
   private conversation: Message[] | RichMessage[] | any[] = [];
-  private greetMessage = "Hi there, glad to see you here ! I'm BBot designed by Bhushan for this website. We can talk about technology, article, employment history, social accounts etc. I would help you with few automated hints (or type hints) if required , Let's get started.";
+  private greetMessage = "Hi there, I am Proco Bot. Happy to help you !";
 
   constructor() {
   }
@@ -84,11 +84,7 @@ export class ChatService {
 
     let greeting = new RichMessage({
       text: this.greetMessage,
-      sentBy: 'bot',
-      chips: [{
-        text: 'Hints',
-        input: 'hints'
-      }]
+      sentBy: 'bot'
     });
 
     this.setConversation([greeting]);

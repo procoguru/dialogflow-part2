@@ -29,7 +29,7 @@ export class ChatComponent implements OnInit {
       }, 100);
     });
     this._chatService.init();
-    this._chatService.sendMessageToBot('about');
+
   }
   onChipSelected($event) {
     this._chatService.sendMessageToBot($event);

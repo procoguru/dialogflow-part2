@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import UserDao from '@daos/User/UserDao.mock';
+import UserDao from './daos/User/UserDao.mock';
 const btoa = require('btoa')
 const request = require('request-promise-native');
 const { WebhookClient } = require('dialogflow-fulfillment');

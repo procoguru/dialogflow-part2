@@ -1,7 +1,9 @@
 @charset "UTF-8";
 @import 'bootstrap-grid.css';
 @import 'icons.css';
+
 /* @import 'https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800&subset=latin-ext'; */
+
 @import '../fonts/google-fonts.css';
 input,
 input[type=text],
@@ -1856,12 +1858,14 @@ html.mm-blocking #mm-blocker {
     min-width: 140px;
     max-width: 160px;
 }
-.btn-small{
+
+.btn-small {
     padding: 6px 15px !important;
     line-height: 20px !important;
     font-size: 13px !important;
     font-weight: 600 !important;
 }
+
 html.mm-opening .mm-menu.mm-opened~.mm-slideout {
     -webkit-transform: translate(80%, 0);
     -ms-transform: translate(80%, 0);
@@ -14005,10 +14009,11 @@ ul.dashboard-box-list>li:hover {
     position: relative;
     top: -1px
 }
+
 .rejected {
-    
     background-color: #dc3139;
 }
+
 .paid {
     background-color: #40b660
 }
@@ -14818,7 +14823,7 @@ ul.dashboard-box-list>li:hover {
 }
 
 .message-bubble .message-text {
-    margin-left: 70px;
+    margin-left: 50px;
     background-color: #f4f4f4;
     border-radius: 4px;
     padding: 12px 18px;
@@ -14833,7 +14838,7 @@ ul.dashboard-box-list>li:hover {
 }
 
 .message-bubble .message-text p {
-    font-size: 15px;
+    font-size: 12px;
     padding: 0;
     margin: 0;
     line-height: 25px

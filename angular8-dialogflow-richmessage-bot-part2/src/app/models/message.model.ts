@@ -1,7 +1,7 @@
 abstract class BaseMessage {
     msgTime = new Date().getTime();
     type: string = 'text';
-    botImg: string = 'https://lh3.googleusercontent.com/-1CKMKmJbFpk/AAAAAAAAAAI/AAAAAAAAFBk/Hb3dOsXgcoI/s96-c/photo.jpg';
+    botImg: string = 'https://media1.tenor.com/images/417b164404395c70a1bbd36b44c1ef10/tenor.gif?itemid=15839692';
     userImg: string = 'http://www.vasterad.com/themes/hireo/images/user-avatar-placeholder.png';
     sentBy: string = 'bot';
 }
