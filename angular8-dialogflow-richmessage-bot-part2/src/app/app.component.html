@@ -1,0 +1,20 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<p *ngIf="updateAvailable">There are some updates available. Please refresh to get them.</p>
+<button *ngIf="pwaService.promptAvailable" (click)="installApp()">Install App</button>
+
+
+<div class="dashboard-content-inner" style="min-height: 583px;">
+			
+
+  <div class="messages-container margin-top-0">
+
+      <div class="messages-container-inner">
+
+
+        <!-- Message Content -->
+        <app-chat></app-chat>
+        <!-- Message Content -->
+
+      </div>
+  </div>
+</div>

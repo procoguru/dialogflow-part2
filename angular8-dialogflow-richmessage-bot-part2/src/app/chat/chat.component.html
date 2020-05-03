@@ -1,0 +1,23 @@
+<div class="message-content">
+
+    <div class="messages-headline">
+        <h4>Intro Bot</h4>
+        <a href="javascript:void()" (click)="clearConversation()" class="message-action"><i
+                class="icon-feather-trash-2"></i> Clear Conversation</a>
+    </div>
+
+    <!-- Message Content Inner -->
+    <div style="min-height:350px" class="message-content-inner">
+        <app-message *ngFor="let m of conversation" [message]="m" (onChipSelected)="onChipSelected($event)">
+        </app-message>
+    </div>
+    <!-- Message Content Inner / End -->
+
+    <!-- Reply Area -->
+    <div class="message-reply">
+        <input type="text" placeholder="Type message and hit enter" [(ngModel)]="inputMessage"
+            (keyup.enter)="sendMessage()">
+        <!-- <button (click)="sendMessage()" class="button ripple-effect">Send</button> -->
+    </div>
+
+</div>
