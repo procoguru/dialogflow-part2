@@ -69,9 +69,15 @@ class DialogFlowBot {
         }
         agent.add(this.createPayloadForDialogFlow(welcomeMsg))
     }
+    private extractSessionId(agent: any) {
+        const session = agent.context.session;
+        console.log(agent.context, agent.context.session)
+        return session && session.split('/').pop()
+    }
 
     private searchUserByUserDetails(agent: any) {
-        console.log(agent.parameters)
+        console.log('session id', this.extractSessionId(agent))
+
         return this.userDao.getOne(agent.parameters.email.toLowerCase()).then(x => {
             console.log('USer info from Dao is', x)
             if (x) {

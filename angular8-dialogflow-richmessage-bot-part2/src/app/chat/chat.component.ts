@@ -28,7 +28,7 @@ export class ChatComponent implements OnInit {
         $(".message-content-inner").stop().animate({ scrollTop: $(".message-content-inner")[0].scrollHeight + 500 }, 100);
       }, 100);
     });
-    this._chatService.init();
+    this._chatService.init('bhushan031092');
 
   }
   onChipSelected($event) {

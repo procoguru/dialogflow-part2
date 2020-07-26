@@ -11,13 +11,17 @@ export class ChatService {
 
 
   token = environment.dialogFlow.accessToken;
-  client = new ApiAiClient({ accessToken: this.token });
+
 
   private conversationSubject = new Subject<Message[] | RichMessage[]>();
   private conversation: Message[] | RichMessage[] | any[] = [];
   private greetMessage = "Hi there, I am Proco Bot. Happy to help you !";
-
+  private client: any = null;
   constructor() {
+  }
+
+  initializeClient(sessionId) {
+    this.client = new ApiAiClient({ accessToken: this.token, sessionId });
   }
 
   setConversation(con: Message[] | RichMessage[]) {
@@ -76,8 +80,8 @@ export class ChatService {
     });
   }
 
-  init() {
-
+  init(sessionId) {
+    this.initializeClient(sessionId);
     this.getConversation().subscribe((conv: Message[] | RichMessage[]) => {
       this.conversation = conv;
     });
